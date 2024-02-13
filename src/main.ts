@@ -6,9 +6,12 @@ import * as express from 'express';
 async function bootstrap() {
   const server = express();
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+
   app.enableCors({
-    origin: 'http://localhost:3000', // URL de tu frontend cuando lo despliegues
+    origin: process.env.ALLOWED_ORIGINS.split(','), // "http://localhost:3000,https://miapp.com"
+    credentials: true,
   });
+
   await app.init();
   return server;
 }
