@@ -1,14 +1,41 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ExpressAdapter } from '@nestjs/platform-express';
-import express from 'express';
+import * as express from 'express';
+import * as serverless from 'serverless-http';
+
+const expressApp = express();
+const adapter = new ExpressAdapter(expressApp);
 
 async function bootstrap() {
-  const server = express();
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
-  app.enableCors();
+  const app = await NestFactory.create(AppModule, adapter);
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+    credentials: true,
+  });
   await app.init();
-  return server; // Devuelve la instancia de Express
 }
 
-export default bootstrap();
+bootstrap();
+
+export const handler = serverless(expressApp);
+
+// import { NestFactory } from '@nestjs/core';
+// import { AppModule } from './app.module';
+// import { ValidationPipe } from '@nestjs/common';
+
+// async function bootstrap() {
+//   const app = await NestFactory.create(AppModule);
+//   app.enableCors({
+//     origin: 'http://localhost:3000',
+//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//     allowedHeaders: 'Content-Type, Accept, Authorization',
+//     credentials: true,
+//   });
+//   app.useGlobalPipes(new ValidationPipe());
+//   await app.listen(3001);
+// }
+
+// bootstrap();

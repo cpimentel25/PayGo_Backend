@@ -7,6 +7,6 @@ export class AppService {
   //   console.log('🚀 JWT_SECRET:', this.configService.get<string>('JWT_SECRET'));
   // }
   getHello(): string {
-    return 'Hello World!';
+    return 'PayGo Test 2024/02!';
   }
 }
