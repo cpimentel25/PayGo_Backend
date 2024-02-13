@@ -1,4 +1,4 @@
-import { TimeSheet } from 'src/time-sheet/time-sheet.entity';
+import { TimeSheet } from '../time-sheet/time-sheet.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
