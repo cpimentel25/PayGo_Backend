@@ -8,14 +8,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
 
   app.enableCors({
-    origin: process.env.ALLOWED_ORIGINS.split(','), // "http://localhost:3000,https://miapp.com"
+    origin: ['http://localhost:3000'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
+    allowedHeaders: 'Content-Type, Accept, Authorization',
   });
 
   await app.init();
   return server;
 }
 
-const serverPromise = bootstrap();
-
-export { serverPromise as server };
+bootstrap();
